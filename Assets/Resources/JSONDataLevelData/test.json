@@ -1,0 +1,9 @@
+{
+  "gridDimension": 128,
+  "offset": [
+    5.0,
+    3.0,
+    1.0
+  ],
+  "cellSize": 10
+}

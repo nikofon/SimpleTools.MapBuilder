@@ -1,0 +1,58 @@
+﻿ListView
+{
+	width: 225px;
+	height: 600px;
+	-unity-text-align: middle-center;
+}
+#ClearButton
+{
+	width: 280px;
+}
+#Scan 
+{
+	width: 150px;
+}
+Button 
+{
+	-unity-font-style: bold;
+}
+#allbotcontainer
+{
+	flex-direction: row;
+}
+#ClearAndCancel
+{
+	flex-direction: row;
+}
+#Bottomandhorizontalscrollcontainer
+{
+	flex-direction: column;
+}
+#Bottomandverticalscrollcontainer
+{
+	flex-direction: row;
+}
+#Scale
+{
+	width: 250px;
+}
+
+#PathAndScan
+{
+	height: 20px;
+	flex-direction: row;
+	display: flex;
+}
+
+TextField
+{
+	-unity-font-style: bold;
+	width: 350px;
+}
+#TileMap
+{
+	height: 600px;
+	width: 625px;
+	-unity-text-align: middle-center;
+	flex-direction: row;
+}

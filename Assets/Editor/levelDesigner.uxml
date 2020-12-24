@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<engine:UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:engine="UnityEngine.UIElements"
+    xmlns:editor="UnityEditor.UIElements"
+	xmlns:uie="UnityEditor.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+>
+	<engine:Box label ="PathBox" name ="PathAndScan" >
+		<engine:TextField label="Name of folder in resources" name="Path to tile folder" value="Resources" /> 
+		<engine:Button text="Scan folder" name="Scan"/>
+		<engine:SliderInt name ="Scale" label ="Scale" low-value="5" high-value="13" value="5"/>
+	</engine:Box>
+	<engine:Box name ="allbotcontainer">
+		<engine:ListView label ="All tiles" name="TileList"/>
+		<engine:Box name ="Bottomandhorizontalscrollcontainer">
+			<engine:Scroller direction="Horizontal" name="HorizontalScroller" low-value="0" value="0"/>
+			<engine:Box name ="Bottomandverticalscrollcontainer">
+				<engine:Scroller direction="Vertical" name="VerticalScoller" low-value="0" value ="0"/>
+				<engine:Box name="TileMap"/>
+			</engine:Box>
+		</engine:Box>
+		<engine:Box name="GridSettings" label ="Grid Settings">
+			<uie:ObjectField label="Parent" name ="parentSelector"/>
+			<uie:Vector3Field label="Offset" name="Offsetvector"/>
+			<uie:IntegerField label="Dimensions" name ="GridDimensions" value="75"/>
+			<uie:IntegerField label="Tile Size" name ="TileSize" value="10"/>
+			<engine:Button text="Create new" name ="NewGridButton"/>
+			<engine:Button text="Space scan" name="SpaceScanButton"/>
+			<engine:Box name="ClearAndCancel">
+			<engine:Button text="Clear" name="ClearButton"/>
+				<engine:Button text="R" name="CancelButton"/>
+			</engine:Box>
+			<engine:Button text="Save" name="SaveButton"/>
+		</engine:Box>
+	</engine:Box>
+</engine:UXML>
+
