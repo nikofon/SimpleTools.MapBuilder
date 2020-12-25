@@ -61,7 +61,6 @@ public class CustomGrid
 
     public void IncreaseGridSize(int additionalspace)
     {
-        Debug.Log(additionalspace);
         int currentsize = grid.GetUpperBound(0) + 1;
         Node[,] newGrid = new Node[currentsize + additionalspace, currentsize + additionalspace];
         for(int i = 0; i < currentsize; i++)

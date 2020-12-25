@@ -10,6 +10,7 @@
 		<engine:TextField label="Name of folder in resources" name="Path to tile folder" value="Resources" /> 
 		<engine:Button text="Scan folder" name="Scan"/>
 		<engine:SliderInt name ="Scale" label ="Scale" low-value="5" high-value="13" value="5"/>
+		<engine:Button text="Eraser" name="Eraser"/>
 	</engine:Box>
 	<engine:Box name ="allbotcontainer">
 		<engine:ListView label ="All tiles" name="TileList"/>

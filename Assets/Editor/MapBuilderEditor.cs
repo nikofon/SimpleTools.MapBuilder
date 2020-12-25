@@ -10,6 +10,9 @@ using System.IO;
 
 public class MapBuilderEditor : EditorWindow
 {
+    public bool EraserSelected { get {return _eraserSelected; } set { if (value) { tilelist.ClearSelection(); eraser.style.backgroundColor = Color.red; } 
+            else eraser.style.backgroundColor = Color.gray; _eraserSelected = value; } }
+    private bool _eraserSelected;
     private string[] references;
     private Tile[] tiles;
     #region Custom Grid Params
@@ -38,6 +41,7 @@ public class MapBuilderEditor : EditorWindow
     private Scroller horizontalScroller;
     private Scroller verticalScroller;
     private ListView tilelist;
+    private Button eraser;
     #endregion
     private CustomGrid initialGrid;
     private Vector2Int currentPivot;
@@ -71,8 +75,10 @@ public class MapBuilderEditor : EditorWindow
         rootVisualElement.Add(treeAsset);
         #endregion
         #region Component Fetching
+        tilelist = rootVisualElement.Query<ListView>().First();
         horizontalScroller = rootVisualElement.Q<Scroller>("HorizontalScroller");
         verticalScroller = rootVisualElement.Q<Scroller>("VerticalScoller");
+        eraser = rootVisualElement.Q<Button>("Eraser");
         var createButton = rootVisualElement.Q<Button>("NewGridButton");
         var rButton = rootVisualElement.Q<Button>("CancelButton");
         var uxmlField = rootVisualElement.Query<TextField>().First();
@@ -92,6 +98,7 @@ public class MapBuilderEditor : EditorWindow
         verticalScroller.highValue = initialGrid.Dimension - GridScale;
         #region Adding callbacks
         rButton.clicked += BackUp;
+        eraser.clicked += () => { EraserSelected = !EraserSelected; };
         saveButton.clicked += Save;
         offsetField.RegisterValueChangedCallback<Vector3>((v) => { foreach (GameObject go in instantiatedObjects) { go.transform.position += v.newValue - OriginOffset; } ;
             OriginOffset = v.newValue;});
@@ -125,7 +132,6 @@ public class MapBuilderEditor : EditorWindow
 
     public void BackUp()
     {
-        Debug.Log(backup.Count);
         if(backup.Count != 0)
         {
             foreach(KeyValuePair<Vector3, GameObject> go in backup)
@@ -176,10 +182,11 @@ public class MapBuilderEditor : EditorWindow
             catch (NullReferenceException) {return; }
             button.style.width = Mathf.Floor(601 / GridScale);
             button.style.height = Mathf.Floor(581 / GridScale);
-            button.text = "(" + startingNode.x.ToString() + " " + (startingNode.y + i).ToString() + ")";
+            button.text += "(" + startingNode.x.ToString() + " " + (startingNode.y + i).ToString() + ")";
             rootVisualElement.Q<Box>(name).Add(button);
             int _i = i;
-            button.clicked += () => {try { InstantiateObject(initialGrid.GetNode(startingNode.x, startingNode.y + _i), (Tile)tilelist.selectedItem, button); }
+            button.clicked += () => {try { if (EraserSelected) { EraseTile(initialGrid.GetNode(startingNode.x, startingNode.y + _i)); } 
+                    else InstantiateObject(initialGrid.GetNode(startingNode.x, startingNode.y + _i), (Tile)tilelist.selectedItem, button); }
                 catch (NullReferenceException) { Debug.LogWarning("Nothing selected"); }
                 };
         }
@@ -214,6 +221,7 @@ public class MapBuilderEditor : EditorWindow
         {
             instantiatedObjects.Remove(node.instantiatedGO);
             DestroyImmediate(node.instantiatedGO);
+            node.instantiatedGO = null;
         }
         node.tile = tile;
         called.style.backgroundColor = tile.editorColor;
@@ -226,6 +234,16 @@ public class MapBuilderEditor : EditorWindow
         {
             tileGO.transform.SetParent(Parent);
         }
+    }
+    public void EraseTile(Node node)
+    {
+        if (node.tile != null)
+        {
+            instantiatedObjects.Remove(node.instantiatedGO);
+            DestroyImmediate(node.instantiatedGO);
+            node.instantiatedGO = null;
+        }
+        CreateGridColumns(OffsetX, OffsetY);
     }
 
     public void Save()
@@ -292,13 +310,11 @@ public class MapBuilderEditor : EditorWindow
         FindAllTiles(out tiles);
         if (tiles.Length != 0)
         {
-            ListView tilelist = rootVisualElement.Query<ListView>().First();
             tilelist.makeItem = () => new Label();
             tilelist.bindItem = (element, i) => (element as Label).text = tiles[i].name;
             tilelist.itemsSource = tiles;
             tilelist.itemHeight = 16;
             tilelist.selectionType = SelectionType.Single;
-            this.tilelist = tilelist;
         }
         else { Debug.LogWarning("No suitable objects found, perhaps the given path is wrong"); }
     }
