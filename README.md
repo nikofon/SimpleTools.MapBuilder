@@ -1,3 +1,3 @@
 # Map Builder
-Simple tools to "tilemap" using 3D prefabs
+Simple tool to "tilemap" using 3D prefabs
 
